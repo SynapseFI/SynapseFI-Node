@@ -5,7 +5,7 @@
 var SynapsePay = require('synapsepay');
 var Clients = SynapsePay.Clients;
 
-var client = Clients(
+var client = new Clients(
 	'YOUR_CLIENT_ID',
 	'YOUR_CLIENT_SECRET',
 	IS_PRODUCTION # boolean
@@ -65,7 +65,7 @@ Users.create(
 	ip_address,
 	createPayload,
 	function(err, user){
-		# THE RESPONSE IS A USER OBJECT
+		# RESPONSE IS A USER OBJECT
 	}
 );
 
@@ -80,7 +80,16 @@ var options = {
 	user_id: ''
 };
 
-var user_response = client.Users.get(options, callback);
+Users.get(
+	client,
+	{
+		_id:'user_id'
+	},
+	function(err, user){
+		# RESPONSE IS A USER OBJECT
+	}
+);
+
 
 # Get All Users
 
@@ -112,8 +121,8 @@ var docPayload = {
 
 user.addDoc(
 	docPayload,
-	function(err, json){
-		# RESPONSE IS A JSON OBJECT BUT THE USER OBJECT HAS BEEN UPDATED
+	function(err, user){
+		# RESPONSE IS A USER OBJECT
 	}
 );
 
@@ -134,8 +143,8 @@ var kbaPayload = {
 
 user.answerKBA(
 	kbaPayload,
-	function(err, json){
-		# RESPONSE IS A JSON OBJECT BUT THE USER OBJECT HAS BEEN UPDATED
+	function(err, user){
+		# RESPONSE IS A USER OBJECT
 	}
 );
 
@@ -146,8 +155,8 @@ user.answerKBA(
 
 user.update(
 	filePayload,
-	function(err, json){
-		# RESPONSE IS A JSON OBJECT BUT THE USER OBJECT HAS BEEN UPDATED
+	function(err, user){
+		# RESPONSE IS A USER OBJECT
 	}
 );
 
@@ -229,12 +238,10 @@ var achPayload = {
 Nodes.create(
 	user,
 	achPayload,
-	function(err, res){
-		# RESPONSE SHOULD BE A NODE OBJECT, BUT CREATE CAN RETURN JSON AS WELL
+	function(err, node){
+		# RESPONSE IS A NODE OBJECT
 	}
 );
-
-var acct_rout_response = client.Nodes.add(acct_rout_payload, callback);
 
 
 # Verify ACH-US via Micro-Deposits
@@ -245,8 +252,8 @@ var microPayload = {
 
 node.update(
 	microPayload,
-	function(err, json){
-		# RESPONSE IS A JSON OBJECT BUT THE NODE OBJECT IS UPDATED
+	function(err, node){
+		# RESPONSE IS A NODE OBJECT
 	}
 );
 
@@ -265,8 +272,9 @@ var loginPayload = {
 Nodes.create(
 	user,
 	loginPayload,
-	function(err, res){
-		# RESPONSE WILL BE JSON IF MFA REQUIRED OTHERWISE A NODE OBJECT IS RETURNED
+	function(err, node){
+		# RESPONSE IS A NODE OBJECT
+		# IF MFA IS REQUIRE THE ERROR WILL CONTAIN THE JSON BODY FROM THE API
 	}
 );
 
@@ -282,7 +290,7 @@ Nodes.create(
 	user,
 	mfaPayload,
 	function(err, res){
-		# RESPONSE WILL BE JSON IF MFA REQUIRED OTHERWISE A NODE OBJECT IS RETURNED
+		# RESPONSE IS A NODE OBJECT
 	}
 );
 
@@ -290,8 +298,8 @@ Nodes.create(
 # Delete a Node
 
 node.delete(
-	function(err, json){
-		# RESPONSE IS A JSON OBJECT BUT THE NODE OBJECT IS UPDATED
+	function(err, node){
+		# RESPONSE IS A NODE OBJECT
 	}
 );
 
@@ -374,15 +382,18 @@ var updatePayload = {
 
 transaction.update(
 	updatePayload,
-	function(err, json){
-		# RETURNS A JSON OBJECT BUT THE TRANSACTION OBJECT IS UPDATED
+	function(err, transaction){
+		# RETURNS A TRANSACTION OBJECT
 	}
 );
 
 
 # Delete Transaction
 
-transaction.delete(callback);
+transaction.delete(function(err, transaction){
+		# RETURNS A TRANSACTION OBJECT
+	}
+);
 
 
 ```
