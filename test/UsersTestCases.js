@@ -4,23 +4,23 @@ var Helpers = require('./Helpers.js');
 
 const CREATE_PAYLOAD = {
 	"logins": [
-        {
-            "email": "nodeTest@synapsepay.com",
-            "password": "test1234",
-            "read_only":false
-        }
-    ],
-    "phone_numbers": [
-        "901.111.1111"
-    ],
-    "legal_names": [
-        "NODE TEST USER"
-    ],
-    "extra": {
-        "note": "Interesting user",
-        "supp_id": "122eddfgbeafrfvbbb",
-        "is_business": false
-    }
+		{
+			"email": "nodeTest@synapsepay.com",
+			"password": "test1234",
+			"read_only":false
+		}
+	],
+	"phone_numbers": [
+		"901.111.1111"
+	],
+	"legal_names": [
+		"NODE TEST USER"
+	],
+	"extra": {
+		"note": "Interesting user",
+		"supp_id": "122eddfgbeafrfvbbb",
+		"is_business": false
+	}
 };
 
 describe('Users', function(){
