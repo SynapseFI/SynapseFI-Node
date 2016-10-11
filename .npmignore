@@ -41,3 +41,6 @@ node_modules
 
 # MarkDown Preview
 *.html
+
+# Tests
+test/
