@@ -4,396 +4,467 @@
 ```javascript
 var SynapsePay = require('synapsepay');
 var Clients = SynapsePay.Clients;
+var Helpers = SynapsePay.Helpers;
 
 var client = new Clients(
-	'YOUR_CLIENT_ID',
-	'YOUR_CLIENT_SECRET',
-	IS_PRODUCTION # boolean
+  // client id should be stored as an environment variable
+  process.env.CLIENT_ID,
+  // client secret should be stored as an environment variable
+  process.env.CLIENT_SECRET,
+  // is_production boolean determines sandbox or production endpoints used
+  false
 );
-
 ```
 
 ## Function Callbacks
 
 ```javascript
+// resp is normally the resource (user/node/transaction). err may be an HTTP
+//   error message or a 202 (virtual doc KBA or bank login MFA questions)
 
-# Unless specifically stated the res is a JSON object.
-
-var callback = function(err, res){
-	# DO SOMETHING
+var callback = function(err, resp) {
+  // DO SOMETHING
 };
-
 ```
 
 
 ## User API Calls
 
 ```javascript
-
-
-# Imports
+// Imports
 
 var Users = SynapsePay.Users;
 
 
-#Create a User
+// Create a User
 
 var createPayload = {
-	"logins" :  [
-		{
-			"email" :  "javascriptTest@synapsepay.com",
-			"password" :  "test1234",
-			"read_only" : false
-		}
-	],
-	"phone_numbers" :  [
-		"901.111.1111"
-	],
-	"legal_names" :  [
-		"NODE TEST USER"
-	],
-	"extra" :  {
-		"note" :  "Interesting user",
-		"supp_id" :  "122eddfgbeafrfvbbb",
-		"is_business" :  false
-	}
+  logins: [
+    {
+      email: 'javascriptTest@synapsepay.com',
+      password: 'test1234',
+      read_only: false
+    }
+  ],
+  phone_numbers: [
+    '901.111.1111'
+  ],
+  legal_names: [
+    'Node TestUser'
+  ],
+  extra: {
+    note: 'Interesting user',
+    supp_id: '122eddfgbeafrfvbbb',
+    is_business: false
+  }
 };
+
+var user;
 
 Users.create(
-	client,
-	fingerprint,
-	ip_address,
-	createPayload,
-	function(err, user){
-		# RESPONSE IS A USER OBJECT
-	}
+  client,
+  // fingerprint (specific to user or static for application)
+  process.env.FINGERPRINT,
+  Helpers.getUserIP(),
+  createPayload,
+  function(err, userResponse) {
+    // error or user object
+    user = userResponse;
+  }
 );
 
 
-
-# Get User
+// Get User
 
 var options = {
-	page: '',
-	per_page: '',
-	query: '',
-	user_id: ''
+  _id: USER_ID,
+  fingerprint: USER_FINGERPRINT,
+  ip_address: Helpers.getUserIP()
 };
 
 Users.get(
-	client,
-	{
-		_id:'user_id'
-	},
-	function(err, user){
-		# RESPONSE IS A USER OBJECT
-	}
+  client,
+  options,
+  function(errResp, userResponse) {
+    // error or user object
+    user = userResponse;
+  }
 );
 
 
-# Get All Users
+// Get All Users
 
-Users.get(
-	client,
-	null,
-	function(err, json){
-		# A JSON OBJECT CONTAINING ALL THE USERS
-	}
-);
-
-
-# Add KYC Information
-
-var docPayload = {
-		"doc" : {
-		"birth_day" : 4,
-		"birth_month" : 2,
-		"birth_year" : 1940,
-		"name_first" : "John",
-		"name_last" : "doe",
-		"address_street1" : "1 Infinite Loop",
-		"address_postal_code" : "95014",
-		"address_country_code" : "US",
-		"document_value" : "3333",
-		"document_type" : "SSN"
-	}
+var options = {
+  page: '',
+  per_page: '',
+  query: ''
 };
 
-user.addDoc(
-	docPayload,
-	function(err, user){
-		# RESPONSE IS A USER OBJECT
-	}
+var users;
+
+Users.get(
+  client,
+  options,
+  function(err, usersResponse) {
+    // error or array of user objects
+    users = usersResponse;
+  }
 );
 
-# Answer KBA Questions
+
+// Add Base Document(s) and Physical/Social/Virtual Documents
+
+var addDocsPayload = {
+  documents: [
+    {
+      email: 'test@test.com',
+      phone_number: '901-942-8167',
+      ip: Helpers.getUserIP(),
+      name: 'Charlie Brown',
+      alias: 'Woof Woof',
+      entity_type: 'M',
+      entity_scope: 'Arts & Entertainment',
+      day: 2,
+      month: 5,
+      year: 2009,
+      address_street: 'Some Farm',
+      address_city: 'SF',
+      address_subdivision: 'CA',
+      address_postal_code: '94114',
+      address_country_code: 'US',
+      virtual_docs: [{
+        document_value: '111-111-3333',
+        document_type: 'SSN'
+      }],
+      physical_docs: [
+        {
+          // use url to base64 helper
+          document_value: Helpers.urlToBase64('http://my.url.com'),
+          document_type: 'GOVT_ID'
+        },
+        {
+          // or file to base64 helper
+          document_value: Helpers.fileToBase64('/path/to/file');,
+          document_type: 'SELFIE'
+        }
+      ],
+      social_docs: [{
+        document_value: 'https://www.facebook.com/sankaet',
+        document_type: 'FACEBOOK'
+      }]
+    }
+  ]
+};
+
+user.addDocuments(
+  addDocsPayload,
+  function(err, userResponse) {
+    // error or user object
+    user = userResponse;
+  }
+);
+
+
+// Answer KBA Questions if Virtual Doc Status is SUBMITTED|MFA_PENDING
 
 var kbaPayload = {
-	"doc" : {
-		"question_set_id" : "557520ad343463000300005a",
-		"answers" : [
-			{ "question_id" :  1, "answer_id" :  1 },
-			{ "question_id" :  2, "answer_id" :  1 },
-			{ "question_id" :  3, "answer_id" :  1 },
-			{ "question_id" :  4, "answer_id" :  1 },
-			{ "question_id" :  5, "answer_id" :  1 }
-		]
-	}
+  documents: [{
+    id: BASE_DOCUMENT_ID,
+    virtual_docs: [{
+      id: VIRTUAL_DOC_ID,
+      meta: {
+        question_set: {
+          answers: [
+            { question_id: 1, answer_id: 1 },
+            { question_id: 2, answer_id: 1 },
+            { question_id: 3, answer_id: 1 },
+            { question_id: 4, answer_id: 1 },
+            { question_id: 5, answer_id: 1 }
+          ]
+        }
+      }
+    }]
+  }]
 };
 
 user.answerKBA(
-	kbaPayload,
-	function(err, user){
-		# RESPONSE IS A USER OBJECT
-	}
+  kbaPayload,
+  function(err, userResponse) {
+    // error or user object
+    user = userResponse;
+  }
 );
 
 
-# Attach File
+// Update Existing Base Document
 
-# Check "Helpers" section for filePayload example. 
+var userUpdatePayload = {
+  documents: [{
+    id: BASE_DOCUMENT_ID,
+    entity_scope: 'Lawyer',
+    birth_day: 22
+  }]
+};
 
 user.update(
-	filePayload,
-	function(err, user){
-		# RESPONSE IS A USER OBJECT
-	}
+  userUpdatePayload,
+  function(err, userResponse) {
+    // error or user object
+    user = userResponse;
+  }
 );
-
 ```
 
 
 ## Node API Calls
 
 ```javascript
-
-
-# Imports
+// Imports
 
 var Nodes = SynapsePay.Nodes;
 
 
-# Get All Nodes
+// Get All Nodes
+
+var nodes;
 
 Nodes.get(
-	user,
-	null,
-	function(err, nodes){
-		# RESPONSE IS AN ARRAY OF NODE OBJECTS
-	}
+  user,
+  null,
+  function(err, nodesResponse) {
+    // error or array of node objects
+    nodes = nodesResponse;
+  }
 );
 
 
-# Get a Specific Node
+// Get a Specific Node
 
 Nodes.get(
-	user,
-	{
-		_id: 'NODE_ID'
-	},
-	function(err, node){
-		# RESPONSE IS A NODE OBJECT
-	}
+  user,
+  {
+    _id: USER_ID
+  },
+  function(err, nodeResponse) {
+    // error or node object
+    node = nodeResponse;
+  }
 );
 
 
-# Add SYNAPSE-US Node
+// Add SYNAPSE-US Node
 
 var synapseNodePayload = {
-	"type" : "SYNAPSE-US",
-	"info" : {
-		"nickname" : "My Synapse Wallet"
-	},
-	"extra" : {
-		"supp_id" : "123sa"
-	}
+  type: 'SYNAPSE-US',
+  info: {
+    nickname: 'My Synapse Wallet'
+  },
+  extra: {
+    supp_id: '123sa'
+  }
 };
 
 Nodes.create(
-	user,
-	synapseNodePayload,
-	function(err, node){
-		# RESPONSE IS A NODE OBJECT
-	}
+  user,
+  synapseNodePayload,
+  function(err, nodeResponse) {
+    // error or node object
+    node = nodeResponse;
+  }
 );
 
 
-# Add ACH-US Node through Account and Routing Number Details
-
-var achPayload = {
-	"type" : "ACH-US",
-	"info" : {
-		"nickname" : "Ruby Library Savings Account",
-		"name_on_account" : "Ruby Library",
-		"account_num" : "72347235423",
-		"routing_num" : "051000017",
-		"type" : "PERSONAL",
-		"class" : "CHECKING"
-	},
-	"extra" : {
-		"supp_id" : "123sa"
-	}
-};
-
-Nodes.create(
-	user,
-	achPayload,
-	function(err, node){
-		# RESPONSE IS A NODE OBJECT
-	}
-);
-
-
-# Verify ACH-US via Micro-Deposits
-
-var microPayload = {
-	"micro" : [0.1,0.1]
-};
-
-node.update(
-	microPayload,
-	function(err, node){
-		# RESPONSE IS A NODE OBJECT
-	}
-);
-
-
-# Add ACH-US node through account login
+// Add ACH-US Node via Bank Login
 
 var loginPayload = {
-	"type" : "ACH-US",
-	"info" : {
-		"bank_id" : "synapse_good",
-		"bank_pw" : "test1234",
-		"bank_name" : "fake"
-	}
+  type: 'ACH-US',
+  info: {
+    bank_id: 'synapse_good',
+    bank_pw: 'test1234',
+    bank_name: 'fake'
+  }
 };
 
+var mfa;
+
 Nodes.create(
-	user,
-	loginPayload,
-	function(err, node){
-		# RESPONSE IS A NODE OBJECT
-		# IF MFA IS REQUIRE THE ERROR WILL CONTAIN THE JSON BODY FROM THE API
-	}
+  user,
+  loginPayload,
+  function(err, nodeResponse) {
+    // error with MFA questions or node object
+    mfa = err.body.mfa;
+  }
 );
 
 
-# Verify ACH-US via MFA
+// Verify ACH-US Node via MFA
 
 var mfaPayload = {
-	"access_token" : ACCESS_TOKEN_IN_LOGIN_RESPONSE,
-	"mfa_answer" : "test_answer"
+  access_token: mfa.access_token,
+  // the user's answer
+  mfa_answer: 'test_answer'
 };
 
 Nodes.create(
-	user,
-	mfaPayload,
-	function(err, res){
-		# RESPONSE IS A NODE OBJECT
-	}
+  user,
+  mfaPayload,
+  function(err, nodesResponse) {
+    // error or array of node objects
+    nodes = nodesResponse;
+  }
 );
 
 
-# Delete a Node
+// Add ACH-US Node through Account and Routing Number Details
+
+var achPayload = {
+  type: 'ACH-US',
+  info: {
+    nickname: 'Node Library Checking Account',
+    name_on_account: 'Node Library',
+    account_num: '72347235423',
+    routing_num: '051000017',
+    type: 'PERSONAL',
+    class: 'CHECKING'
+  },
+  extra: {
+    supp_id: '123sa'
+  }
+};
+
+
+Nodes.create(
+  user,
+  achPayload,
+  function(err, nodesResponse) {
+    // error or node object
+    // node will only have RECEIVE permission until verified with micro-deposits
+    nodes = nodesResponse;
+  }
+);
+
+
+// Verify ACH-US via Micro-Deposits (for those added via Account/Routing)
+
+var microPayload = {
+  micro: [0.1, 0.1]
+};
+
+node = nodes[0];
+
+node.update(
+  microPayload,
+  function(err, nodeResponse) {
+    // error or node object
+    node = nodeResponse;
+  }
+);
+
+
+// Delete a Node
 
 node.delete(
-	function(err, node){
-		# RESPONSE IS A NODE OBJECT
-	}
+  function(err, resp) {
+    // error or response object
+  }
 );
-
-
 ```
 
 ## Transaction API Calls
 
 ```javascript
-
-
-# Imports
+// Imports
 
 var Transactions = SynapsePay.Transactions;
 
 
-#Create a Transaction
+// Create a Transaction
 
 var createPayload = {
-	"to" : {
-		"type" : "SYNAPSE-US",
-		"id" : "560adb4e86c27331bb5ac86e"
-	},
-	"amount" : {
-		"amount" : 1.10,
-		"currency" : "USD"
-	},
-	"extra" : {
-		"supp_id" : "1283764wqwsdd34wd13212",
-		"note" : "Deposit to bank account",
-		"webhook" : "http : //requestb.in/q94kxtq9",
-		"process_on" : 1,
-		"ip" : "192.168.0.1"
-	},
-	"fees" : [{
-		"fee" : 1.00,
-		"note" : "Facilitator Fee",
-		"to" : {
-			"id" : "55d9287486c27365fe3776fb"
-		}
-	}]
+  to: {
+    type: 'SYNAPSE-US',
+    id: TO_NODE_ID
+  },
+  amount: {
+    amount: 1.10,
+    currency: 'USD'
+  },
+  extra: {
+    supp_id: '1283764wqwsdd34wd13212',
+    note: 'Deposit to bank account',
+    webhook: 'http://requestb.in/q94kxtq9',
+    process_on: 1,
+    ip: Helpers.getUserIP()
+  }
+  fees: [{
+    fee: 1.00,
+    note: 'Facilitator Fee',
+    to: {
+      id: FEE_TO_NODE_ID
+    }
+  }]
 };
 
+var transaction;
+
 Transactions.create(
-	node,
-	createPayload,
-	function(err, transaction){
-		# RESPONSE IS A TRANSACTION OBJECT
-	}
+  node,
+  createPayload,
+  function(err, transactionResp) {
+    // error or transaction object
+    transaction = transactionResp;
+  }
 );
 
 
-# Get a Transaction
+// Get a Transaction
 
 Transactions.get(
-	node,
-	{
-		_id: 'TRANSACTION_ID'
-	},
-	function(err, transaction){
-		# RESPONSE IS A TRANSACTION OBJECT
-	}
+  node,
+  {
+    _id: NODE_ID
+  },
+  function(err, transactionResp) {
+    // error or transaction object
+    transaction = transactionResp;
+  }
 );
 
-# Get All Transactions
+
+// Get All Transactions
+
+var transactions;
 
 Transactions.get(
-	node,
-	function(err, json){
-		# RESPONSE IS A JSON OBJECT CONTAINING ALL THE TRANSACTIONS
-	}
+  node,
+  null,
+  function(err, transactionsResp) {
+    // error or transaction object
+    transactions = transactionsResp;
+  }
 );
 
 
-# Update Transaction
+// Update Transaction
 
 var updatePayload = {
-	"comment" :  "hi"
+  comment: 'hi'
 };
 
 transaction.update(
-	updatePayload,
-	function(err, transaction){
-		# RETURNS A TRANSACTION OBJECT
-	}
+  updatePayload,
+  function(err, transactionResp) {
+    // error or transaction object
+    transaction = transactionResp;
+  }
 );
 
 
-# Delete Transaction
+// Delete Transaction
 
-transaction.delete(function(err, transaction){
-		# RETURNS A TRANSACTION OBJECT
-	}
+transaction.delete(function(err, transactionResp) {
+    // error or transaction object
+    transaction = transactionResp;
+  }
 );
-
-
 ```
