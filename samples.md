@@ -2,11 +2,11 @@
 ## Client
 
 ```javascript
-var SynapsePay = require('synapsepay');
-var Clients = SynapsePay.Clients;
-var Helpers = SynapsePay.Helpers;
+const SynapsePay = require('synapsepay');
+const Clients = SynapsePay.Clients;
+const Helpers = SynapsePay.Helpers;
 
-var client = new Clients(
+const client = new Clients(
   // client id should be stored as an environment variable
   process.env.CLIENT_ID,
   // client secret should be stored as an environment variable
@@ -22,7 +22,7 @@ var client = new Clients(
 // resp is normally the resource (user/node/transaction). err may be an HTTP
 //   error message or a 202 (virtual doc KBA or bank login MFA questions)
 
-var callback = function(err, resp) {
+const callback = function(err, resp) {
   // DO SOMETHING
 };
 ```
@@ -33,12 +33,12 @@ var callback = function(err, resp) {
 ```javascript
 // Imports
 
-var Users = SynapsePay.Users;
+const Users = SynapsePay.Users;
 
 
 // Create a User
 
-var createPayload = {
+const createPayload = {
   logins: [
     {
       email: 'javascriptTest@synapsepay.com',
@@ -59,7 +59,7 @@ var createPayload = {
   }
 };
 
-var user;
+let user;
 
 Users.create(
   client,
@@ -76,7 +76,7 @@ Users.create(
 
 // Get User
 
-var options = {
+let options = {
   _id: USER_ID,
   fingerprint: USER_FINGERPRINT,
   ip_address: Helpers.getUserIP()
@@ -94,13 +94,13 @@ Users.get(
 
 // Get All Users
 
-var options = {
+let options = {
   page: '',
   per_page: '',
   query: ''
 };
 
-var users;
+let users;
 
 Users.get(
   client,
@@ -114,7 +114,7 @@ Users.get(
 
 // Add Base Document(s) and Physical/Social/Virtual Documents
 
-var addDocsPayload = {
+const addDocsPayload = {
   documents: [
     {
       email: 'test@test.com',
@@ -167,7 +167,7 @@ user.addDocuments(
 
 // Answer KBA Questions if Virtual Doc Status is SUBMITTED|MFA_PENDING
 
-var kbaPayload = {
+const kbaPayload = {
   documents: [{
     id: BASE_DOCUMENT_ID,
     virtual_docs: [{
@@ -198,7 +198,7 @@ user.answerKBA(
 
 // Update Existing Base Document
 
-var userUpdatePayload = {
+const userUpdatePayload = {
   documents: [{
     id: BASE_DOCUMENT_ID,
     entity_scope: 'Lawyer',
@@ -221,12 +221,12 @@ user.update(
 ```javascript
 // Imports
 
-var Nodes = SynapsePay.Nodes;
+const Nodes = SynapsePay.Nodes;
 
 
 // Get All Nodes
 
-var nodes;
+let nodes;
 
 Nodes.get(
   user,
@@ -254,7 +254,7 @@ Nodes.get(
 
 // Add SYNAPSE-US Node
 
-var synapseNodePayload = {
+const synapseNodePayload = {
   type: 'SYNAPSE-US',
   info: {
     nickname: 'My Synapse Wallet'
@@ -276,7 +276,7 @@ Nodes.create(
 
 // Add ACH-US Node via Bank Login
 
-var loginPayload = {
+const loginPayload = {
   type: 'ACH-US',
   info: {
     bank_id: 'synapse_good',
@@ -285,7 +285,7 @@ var loginPayload = {
   }
 };
 
-var mfa;
+let mfa;
 
 Nodes.create(
   user,
@@ -299,7 +299,7 @@ Nodes.create(
 
 // Verify ACH-US Node via MFA
 
-var mfaPayload = {
+const mfaPayload = {
   access_token: mfa.access_token,
   // the user's answer
   mfa_answer: 'test_answer'
@@ -317,7 +317,7 @@ Nodes.create(
 
 // Add ACH-US Node through Account and Routing Number Details
 
-var achPayload = {
+const achPayload = {
   type: 'ACH-US',
   info: {
     nickname: 'Node Library Checking Account',
@@ -346,7 +346,7 @@ Nodes.create(
 
 // Verify ACH-US via Micro-Deposits (for those added via Account/Routing)
 
-var microPayload = {
+const microPayload = {
   micro: [0.1, 0.1]
 };
 
@@ -375,12 +375,12 @@ node.delete(
 ```javascript
 // Imports
 
-var Transactions = SynapsePay.Transactions;
+const Transactions = SynapsePay.Transactions;
 
 
 // Create a Transaction
 
-var createPayload = {
+const createPayload = {
   to: {
     type: 'SYNAPSE-US',
     id: TO_NODE_ID
@@ -405,7 +405,7 @@ var createPayload = {
   }]
 };
 
-var transaction;
+let transaction;
 
 Transactions.create(
   node,
@@ -433,7 +433,7 @@ Transactions.get(
 
 // Get All Transactions
 
-var transactions;
+let transactions;
 
 Transactions.get(
   node,
@@ -447,7 +447,7 @@ Transactions.get(
 
 // Update Transaction
 
-var updatePayload = {
+const updatePayload = {
   comment: 'hi'
 };
 
