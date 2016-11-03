@@ -1,3 +1,5 @@
+'use strict';
+
 var Clients = require('../lib/Clients.js');
 
 const Helpers = {

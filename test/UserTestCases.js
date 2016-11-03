@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('chai').assert;
 var Users = require('../lib/Users.js');
 var Helpers = require('./Helpers.js');

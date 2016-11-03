@@ -243,7 +243,7 @@ Nodes.get(
 Nodes.get(
   user,
   {
-    _id: USER_ID
+    _id: NODE_ID
   },
   function(err, nodeResponse) {
     // error or node object
@@ -422,7 +422,7 @@ Transactions.create(
 Transactions.get(
   node,
   {
-    _id: NODE_ID
+    _id: TRANSACTION_ID
   },
   function(err, transactionResp) {
     // error or transaction object
