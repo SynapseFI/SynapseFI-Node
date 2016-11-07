@@ -39,43 +39,40 @@ describe('Node', function() {
       },
       function(err, user) {
         testUser = user;
-        console.log('user in NodeTest >>> ', user);
         Nodes.create(
           testUser,
           createPayload,
           function(err, nodes) {
             testNode = nodes[0];
-            console.log('nodes in NodeTest >>> ', nodes);
             done();
           }
         );
       });
   });
 
-  describe('update', function() {
-    it('should verify a Node object through micro-deposits', function(done) {
-      testNode.update(
-        verifyPayload,
-        function(err, node) {
-          // assert.isNull(err, 'there was no error');
-          console.log('node in test >> ', node);
-          assert(node.user !== undefined);
-          done();
-        }
-      );
-    });
-  });
+  // Already being tested in NodesTestCases.js
+  // describe('update', function() {
+  //   it('should verify a Node object through micro-deposits', function(done) {
+  //     testNode.update(
+  //       verifyPayload,
+  //       function(err, node) {
+  //         // assert.isNull(err, 'there was no error');
+  //         assert(node.user !== undefined);
+  //         done();
+  //       }
+  //     );
+  //   });
+  // });
 
   describe('delete', function() {
     it('should delete a node', function(done) {
       testNode.delete(
         function(err, node) {
-          // assert.isNull(err, 'there was no error');
-          console.log('node in Node.delete test >> ', node);
           assert(node.json.http_code === '200');
           done();
         }
       );
     });
   });
+
 });
