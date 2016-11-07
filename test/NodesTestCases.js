@@ -111,26 +111,9 @@ describe('Nodes', function() {
         CREATE_VIA_ACCT_ROUTING_PAYLOAD,
         function(err, nodes) {
           node = nodes[0];
-          assert.isNull(err, 'there was no error');
-          // assert(node.user !== undefined);
           // does not have DEBIT permission
           assert(node.json.allowed === 'CREDIT');
           done();
-
-          var microPayload = {
-            micro: [0.1, 0.1]
-          };
-
-          // node.update(
-          //   microPayload,
-          //   function(err, node) {
-          //     assert.isNull(err, 'there was no error');
-          //     // assert(node.user !== undefined);
-          //     // has DEBIT permission
-          //     assert(node.json.allowed === 'CREDIT-AND-DEBIT');
-          //     done();
-          //   }
-          // );
         }
       );
     });
@@ -180,4 +163,5 @@ describe('Nodes', function() {
       );
     });
   });
+
 });
