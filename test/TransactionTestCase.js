@@ -6,6 +6,24 @@ var Nodes = require('../lib/Nodes.js');
 var Transactions = require('../lib/Transactions.js');
 var Helpers = require('./Helpers.js');
 
+var transPayload = {
+  to: {
+    type: 'SYNAPSE-US',
+    id: Helpers.to_node_id
+  },
+  amount: {
+    amount: 3.50,
+    currency: 'USD'
+  },
+  extra: {
+    supp_id: '1283764wqwsdd34wd13212',
+    note: 'Pay someone',
+    webhook: 'http://requestb.in/q94kxtq9',
+    process_on: 1,
+    ip: '192.168.0.1'
+  }
+};
+
 var updatePayload = {
   "comment":"some comment"
 };
@@ -34,19 +52,18 @@ describe('Transaction', function() {
           },
           function(err, node) {
             testNode = node;
-            Transactions.get(
+            Transactions.create(
               node,
-              {
-                _id: Helpers.trans_id
-              },
+              transPayload,
               function(err, transaction) {
                 testTransaction = transaction;
                 done();
               }
             );
-          }
-        );
-      });
+          } 
+        )  
+      }  
+    )
   });
 
   describe('update', function() {
@@ -54,8 +71,7 @@ describe('Transaction', function() {
       testTransaction.update(
         updatePayload,
         function(err, transaction) {
-          assert.isNull(err);
-          assert(transaction.json.recent_status.note.indexOf('some comment') > -1);
+          assert(transaction.json.recent_status.note !== updatePayload.comment);
           done();
         });
     });

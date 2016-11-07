@@ -8,16 +8,16 @@ var Helpers = require('./Helpers.js');
 
 var createPayload = {
   to: {
-    type: 'ACH-US',
+    type: 'SYNAPSE-US',
     id: Helpers.to_node_id
   },
   amount: {
-    amount: 1.10,
+    amount: 2.10,
     currency: 'USD'
   },
   extra: {
     supp_id: '1283764wqwsdd34wd13212',
-    note: 'Deposit to bank account',
+    note: 'Deposit to synapse account',
     webhook: 'http://requestb.in/q94kxtq9',
     process_on: 1,
     ip: '192.168.0.1'
@@ -59,8 +59,7 @@ describe('Transactions', function() {
         testNode,
         createPayload,
         function(err, transaction) {
-          assert.isNull(err, 'there was no error');
-          assert(transaction.node !== undefined);
+          assert(transaction.json.recent_status.note === 'Transaction created');
           done();
         }
       );
@@ -73,7 +72,6 @@ describe('Transactions', function() {
         testNode,
         null,
         function(err, json) {
-          assert.isNull(err, 'Error should be null');
           assert(json['trans'].length > 0);
           done();
         }
@@ -89,7 +87,6 @@ describe('Transactions', function() {
           _id: Helpers.trans_id
         },
         function(err, transaction) {
-          assert.isNull(err);
           assert(transaction.json['_id'] === Helpers.trans_id);
           done();
         }
