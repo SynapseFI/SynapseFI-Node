@@ -35,7 +35,7 @@ var testTransaction;
 describe('Transaction', function() {
   this.timeout(30000);
   
-  beforeEach(function(done) {
+  before(function(done) {
     Users.get(
       Helpers.client,
       {
@@ -72,6 +72,16 @@ describe('Transaction', function() {
         updatePayload,
         function(err, transaction) {
           assert(transaction.json.recent_status.note !== updatePayload.comment);
+          done();
+        });
+    });
+  });
+
+  describe('delete', function() {
+    it('should delete a transaction', function(done) {
+      testTransaction.delete(
+        function(err, transaction) {
+          assert(transaction.json === undefined);
           done();
         });
     });
