@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('chai').assert;
 var Users = require('../lib/Users.js');
 var Nodes = require('../lib/Nodes.js');
@@ -6,10 +8,10 @@ var Helpers = require('./Helpers.js');
 const CREATE_PAYLOAD = {
   type: 'SYNAPSE-US',
   info: {
-    nickname: 'Node Unit Test Synapse Wallet'
+    nickname: 'SYNAPSE-US TEST NODE'
   },
   extra: {
-    supp_id: '123sa'
+    supp_id: '1234'
   }
 };
 
@@ -33,7 +35,7 @@ const CREATE_VIA_ACCT_ROUTING_PAYLOAD = {
     class: 'CHECKING'
   },
   extra: {
-    supp_id: '123sa'
+    supp_id: '1234'
   }
 };
 
@@ -102,31 +104,31 @@ describe('Nodes', function() {
   });
 
   describe('create ACH-US via account/routing', function() {
-    it('should create a Node object array', function(done) {
+    var node;
+    it('should create a Node object that has CREDIT permission', function(done) {
       Nodes.create(
         nodeUser,
         CREATE_VIA_ACCT_ROUTING_PAYLOAD,
         function(err, nodes) {
-          var node = nodes[0];
-          assert.isNull(err, 'there was no error');
-          assert(node.user !== undefined);
+          node = nodes[0];
           // does not have DEBIT permission
           assert(node.json.allowed === 'CREDIT');
+          done();
+        }
+      );
+    });
 
-          var microPayload = {
-            micro: [0.1, 0.1]
-          };
+    it('should update permission to CREDIT-AND-DEBIT after verification', function(done) {
+      var microPayload = {
+        micro: [0.1, 0.1]
+      };
 
-          node.update(
-            microPayload,
-            function(err, node) {
-              assert.isNull(err, 'there was no error');
-              assert(node.user !== undefined);
-              // has DEBIT permission
-              assert(node.json.allowed === 'CREDIT-AND-DEBIT');
-              done();
-            }
-          );
+      node.update(
+        microPayload,
+        function(err, updatedNode) {
+          assert.isNull(err, 'there was no error');
+          assert(updatedNode.allowed === 'CREDIT-AND-DEBIT');
+          done();
         }
       );
     });
@@ -161,4 +163,5 @@ describe('Nodes', function() {
       );
     });
   });
+
 });

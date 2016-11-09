@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('chai').assert;
 var Users = require('../lib/Users.js');
 var Nodes = require('../lib/Nodes.js');
@@ -48,16 +50,29 @@ describe('Node', function() {
       });
   });
 
-  describe('update', function() {
-    it('should verify a Node object through micro-deposits', function(done) {
-      testNode.update(
-        verifyPayload,
+  // Already being tested in NodesTestCases.js
+  // describe('update', function() {
+  //   it('should verify a Node object through micro-deposits', function(done) {
+  //     testNode.update(
+  //       verifyPayload,
+  //       function(err, node) {
+  //         // assert.isNull(err, 'there was no error');
+  //         assert(node.user !== undefined);
+  //         done();
+  //       }
+  //     );
+  //   });
+  // });
+
+  describe('delete', function() {
+    it('should delete a node', function(done) {
+      testNode.delete(
         function(err, node) {
-          assert.isNull(err, 'there was no error');
-          assert(node.user !== undefined);
+          assert(node.json.http_code === '200');
           done();
         }
       );
     });
   });
+
 });

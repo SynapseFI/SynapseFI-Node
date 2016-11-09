@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('chai').assert;
 var Users = require('../lib/Users.js');
 var Helpers = require('./Helpers.js');
@@ -136,7 +138,7 @@ describe('User', function() {
   });
 
   describe('answerKBA', function() {
-    it('should answer any knowledge-based questions a user receives', function() {
+    it('should answer any knowledge-based questions a user receives', function(done) {
 
       // triggers SUBMITTED|MFA_PENDING
       var addDocsPayload = {
@@ -204,6 +206,7 @@ describe('User', function() {
         unverifiedUser.answerKBA(kbaPayload, function(err, json) {
           assert.isNull(err, 'there was no error');
           assert(json.json['permission'] !== 'UNVERIFIED');
+          done();
         });
       });
     });

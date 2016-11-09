@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('chai').assert;
 var Users = require('../lib/Users.js');
 var Helpers = require('./Helpers.js');
@@ -68,6 +70,19 @@ describe('Users', function() {
         function(err, user) {
           assert.isNull(err);
           assert(user.oauth_key !== undefined);
+          done();
+        }
+      );
+    });
+  });
+
+  describe('getUserById', function() {
+    it('should get a single User object', function(done) {
+      Users.getUserById(
+        Helpers.client,
+        Helpers.user_id,
+        function(err, user) {
+          assert(user.logins[0].email === 'test1@yahoo.com');
           done();
         }
       );
