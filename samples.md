@@ -92,18 +92,6 @@ Users.get(
 );
 
 
-// Get User By ID (does same as above, but simpler and requires less input)
-
-Users.getUserById(
-  client,
-  userId,
-  function(err, userObj) {
-    // error or user object
-    user = userObj;
-  }
-);
-
-
 // Get All Users
 
 let options = {
