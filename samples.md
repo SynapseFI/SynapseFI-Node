@@ -144,7 +144,7 @@ const addDocsPayload = {
         },
         {
           // or file to base64 helper
-          document_value: Helpers.fileToBase64('/path/to/file');,
+          document_value: Helpers.fileToBase64('/path/to/file'),
           document_type: 'SELFIE'
         }
       ],
