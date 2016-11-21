@@ -5,7 +5,7 @@ var Users = require('../lib/Users.js');
 var Nodes = require('../lib/Nodes.js');
 var Helpers = require('./Helpers.js');
 
-const CREATE_PAYLOAD = {
+const synapseUSpayload = {
   type: 'SYNAPSE-US',
   info: {
     nickname: 'SYNAPSE-US TEST NODE'
@@ -15,7 +15,16 @@ const CREATE_PAYLOAD = {
   }
 };
 
-const CREATE_VIA_BANK_LOGIN_PAYLOAD = {
+const bankLoginNoMfa = {
+  type: "ACH-US",
+  info:{
+    bank_id: "synapse_nomfa",
+    bank_pw: "test1234",
+    bank_name: "fake"
+  }
+};
+
+const bankLoginWithMfa = {
   type: 'ACH-US',
   info: {
     bank_id: 'synapse_good',
@@ -24,7 +33,7 @@ const CREATE_VIA_BANK_LOGIN_PAYLOAD = {
   }
 };
 
-const CREATE_VIA_ACCT_ROUTING_PAYLOAD = {
+const acctRoutingPayload = {
   type: 'ACH-US',
   info: {
     nickname: 'Node Library Checking Account',
@@ -62,7 +71,7 @@ describe('Nodes', function() {
     it('should create a Node object array', function(done) {
       Nodes.create(
         nodeUser,
-        CREATE_PAYLOAD,
+        synapseUSpayload,
         function(err, nodes) {
           assert.isNull(err, 'there was no error');
           assert(nodes[0].user !== undefined);
@@ -76,7 +85,20 @@ describe('Nodes', function() {
     it('should create a Node object array', function(done) {
       Nodes.create(
         nodeUser,
-        CREATE_VIA_BANK_LOGIN_PAYLOAD,
+        bankLoginNoMfa,
+        function(err, nodes) {
+          assert(nodes.length !== 0);
+          done();
+        }
+      );
+    });
+  });
+
+  describe('create ACH-US via bank login with MFA', function() {
+    it('should create a Node object array', function(done) {
+      Nodes.create(
+        nodeUser,
+        bankLoginWithMfa,
         function(err, nodes) {
           assert.isNotNull(err, 'there was an error');
           assert.isNotNull(err.body.mfa, 'there is an MFA question');
@@ -108,7 +130,7 @@ describe('Nodes', function() {
     it('should create a Node object that has CREDIT permission', function(done) {
       Nodes.create(
         nodeUser,
-        CREATE_VIA_ACCT_ROUTING_PAYLOAD,
+        acctRoutingPayload,
         function(err, nodes) {
           node = nodes[0];
           // does not have DEBIT permission

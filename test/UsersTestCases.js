@@ -76,16 +76,4 @@ describe('Users', function() {
     });
   });
 
-  describe('getUserById', function() {
-    it('should get a single User object', function(done) {
-      Users.getUserById(
-        Helpers.client,
-        Helpers.user_id,
-        function(err, user) {
-          assert(user.logins[0].email === 'test1@yahoo.com');
-          done();
-        }
-      );
-    });
-  });
 });
