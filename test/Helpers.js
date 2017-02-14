@@ -12,7 +12,7 @@ const Helpers = {
   node_id: '57fae3cf86c273223be199a3',
   // Make sure to_node_id provided has type: 'SYNAPSE-US' 
   to_node_id: '57fb13b686c27351ae7bd8c1',
-  trans_id: '5820db7986c273586b9f228a'
+  trans_id: '588aaf4486c2730bf932dd54'
 };
 
 module.exports = Helpers;

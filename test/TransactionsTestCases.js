@@ -59,7 +59,7 @@ describe('Transactions', function() {
         testNode,
         createPayload,
         function(err, transaction) {
-          assert(transaction.json.recent_status.note === 'Transaction created');
+          assert.equal(transaction.json.recent_status.status_id, '1');
           done();
         }
       );
