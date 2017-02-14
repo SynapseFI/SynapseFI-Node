@@ -68,7 +68,6 @@ describe('Users', function() {
           ip_address: Helpers.ip_address
         },
         function(err, user) {
-          assert.isNull(err);
           assert(user.oauth_key !== undefined);
           done();
         }
