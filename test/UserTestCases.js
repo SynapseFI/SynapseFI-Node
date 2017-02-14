@@ -1,8 +1,12 @@
 'use strict';
 
-var assert = require('chai').assert;
+var chai = require('chai');
+var chaiHttp = require('chai-http');
+var assert = chai.assert;
 var Users = require('../lib/Users.js');
 var Helpers = require('./Helpers.js');
+
+chai.use(chaiHttp);
 
 var createPayload = {
   logins: [
@@ -58,7 +62,7 @@ var addDocsPayload = {
       entity_scope: 'Arts & Entertainment',
       day: 2,
       month: 5,
-      year: 2009,
+      year: 1987,
       address_street: 'Some Farm',
       address_city: 'SF',
       address_subdivision: 'CA',
@@ -87,11 +91,12 @@ var addDocsPayload = {
 };
 
 var unverifiedUser;
+var baseUrl = 'https://uat-api.synapsefi.com/v3.1';
 
 describe('User', function() {
   this.timeout(30000);
 
-  beforeEach(function(done) {
+  before(function(done) {
 
     Users.create(
         Helpers.client,
@@ -116,27 +121,37 @@ describe('User', function() {
     });
   });
 
-  // deprecated
-  describe('addDoc', function() {
-    it('should add the virtual doc to the user', function(done) {
-      unverifiedUser.addDoc(docPayload, function(err, json) {
-        assert.isNull(err, 'there was no error');
-        assert(unverifiedUser.json['permission'] !== 'UNVERIFIED');
-        done();
-      });
-    });
-  });
+  // // deprecated
+  // describe('addDoc', function() {
+  //   it('should add the virtual doc to the user', function(done) {
+  //     unverifiedUser.addDoc(docPayload, function(err, json) {
+  //       assert.isNull(err, 'there was no error');
+  //       assert(unverifiedUser.json['permission'] !== 'UNVERIFIED');
+  //       done();
+  //     });
+  //   });
+  // });
 
   describe('addDocuments', function() {
     it('should add the documents to the user', function(done) {
-      unverifiedUser.addDocuments(addDocsPayload, function(err, json) {
-        assert.isNull(err, 'there was no error');
-        assert(unverifiedUser.json['permission'] !== 'UNVERIFIED');
-        done();
+      unverifiedUser.addDocuments(addDocsPayload, function(err, res) {
+        // assert.isNull(err, 'there was no error');
+        // assert.notEqual(res.json['permission'], 'UNVERIFIED');
+        // done();
+
+        var userId = res.json._id;
+
+        chai.request(baseUrl)
+        .get(`/users/${userId}`)
+        .end(function(err, res) {
+          assert.notEqual(res['permission'], 'UNVERIFIED');
+          done();                               // <= Call done to signal callback end
+        });
       });
     });
   });
 
+  /***** DEPRECATED *********
   describe('answerKBA', function() {
     it('should answer any knowledge-based questions a user receives', function(done) {
 
@@ -211,4 +226,5 @@ describe('User', function() {
       });
     });
   });
+  ****************************/
 });
