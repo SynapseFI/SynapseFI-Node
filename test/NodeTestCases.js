@@ -68,7 +68,7 @@ describe('Node', function() {
     it('should delete a node', function(done) {
       testNode.delete(
         function(err, node) {
-          assert(node.json.http_code === '200');
+          assert.strictEqual(node.json.is_active, false);
           done();
         }
       );
