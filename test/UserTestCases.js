@@ -121,24 +121,20 @@ describe('User', function() {
     });
   });
 
-  // // deprecated
-  // describe('addDoc', function() {
-  //   it('should add the virtual doc to the user', function(done) {
-  //     unverifiedUser.addDoc(docPayload, function(err, json) {
-  //       assert.isNull(err, 'there was no error');
-  //       assert(unverifiedUser.json['permission'] !== 'UNVERIFIED');
-  //       done();
-  //     });
-  //   });
-  // });
+  // deprecated
+  describe('addDoc', function() {
+    it('should add the virtual doc to the user', function(done) {
+      unverifiedUser.addDoc(docPayload, function(err, json) {
+        assert.isNull(err, 'there was no error');
+        assert(unverifiedUser.json['permission'] !== 'UNVERIFIED');
+        done();
+      });
+    });
+  });
 
   describe('addDocuments', function() {
     it('should add the documents to the user', function(done) {
       unverifiedUser.addDocuments(addDocsPayload, function(err, res) {
-        // assert.isNull(err, 'there was no error');
-        // assert.notEqual(res.json['permission'], 'UNVERIFIED');
-        // done();
-
         var userId = res.json._id;
 
         chai.request(baseUrl)
