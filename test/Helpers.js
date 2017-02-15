@@ -5,7 +5,7 @@ var Clients = require('../lib/Clients.js');
 const Helpers = {
   client: new Clients(process.env.CLIENT_ID, process.env.CLIENT_SECRET, false),
   ip_address: '127.0.0.1',
-  fingerprint: process.env.FINGERPRINT,
+  fingerprint: 'fingerprint123',
   // fill these in with values associated with your own keys
   user_id: '57f9421186c2737c5820d29e',
   // Make sure node_id provided is allowed: "CREDIT-AND-DEBIT" permissions
