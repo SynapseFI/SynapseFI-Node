@@ -38,7 +38,7 @@ const acctRoutingPayload = {
   info: {
     nickname: 'Node Library Checking Account',
     name_on_account: 'Node Library',
-    account_num: Math.floor(Math.random() * 1000000000),
+    account_num: String(Math.floor(Math.random() * 1000000000)),
     routing_num: '051000017',
     type: 'PERSONAL',
     class: 'CHECKING'

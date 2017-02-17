@@ -14,6 +14,7 @@
   "author": "SynapsePay LLC.<help@synapsepay.com>",
   "license": "(ISC)",
   "devDependencies": {
+    "chai-http": "^3.0.0",
     "eslint": "^3.7.1",
     "eslint-config-google": "^0.6.0",
     "mocha": "^2.3.4",

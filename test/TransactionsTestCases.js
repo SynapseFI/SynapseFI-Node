@@ -19,7 +19,7 @@ var createPayload = {
     supp_id: '1283764wqwsdd34wd13212',
     note: 'Deposit to synapse account',
     webhook: 'http://requestb.in/q94kxtq9',
-    process_on: 1,
+    process_on: 0,
     ip: '192.168.0.1'
   }
 };
@@ -59,11 +59,36 @@ describe('Transactions', function() {
         testNode,
         createPayload,
         function(err, transaction) {
-          assert(transaction.json.recent_status.note === 'Transaction created');
+          assert.equal(transaction.json.recent_status.status_id, '1');
           done();
         }
       );
     });
+
+    // it('should create a transaction with an idempotency key', function(done) {
+    //   var options = {
+    //     idempotency_key: Math.floor(Math.random() * 1000000000)
+    //   };
+    //   Transactions.createWithOptions(
+    //     testNode,
+    //     options,
+    //     createPayload,
+    //     function(err, transaction) {
+    //       // create another transaction using same idempotency key
+    //       // should return an error
+    //       Transactions.createWithOptions(
+    //         testNode,
+    //         options,
+    //         createPayload,
+    //         function(err, trans2) {
+    //           assert.equal(transaction.json.recent_status.status_id, '1');
+    //           assert.isNotNull(err);
+    //           done();
+    //         }
+    //       );
+    //     }
+    //   );
+    // });
   });
 
   describe('get transactions', function() {

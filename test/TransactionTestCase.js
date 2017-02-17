@@ -71,7 +71,10 @@ describe('Transaction', function() {
       testTransaction.update(
         updatePayload,
         function(err, transaction) {
-          assert(transaction.json.recent_status.note !== updatePayload.comment);
+          assert.equal(
+            transaction.json.recent_status.note, 
+            testTransaction.json.recent_status.note
+          );
           done();
         });
     });
@@ -81,7 +84,7 @@ describe('Transaction', function() {
     it('should delete a transaction', function(done) {
       testTransaction.delete(
         function(err, transaction) {
-          assert(transaction.json === undefined);
+          assert.equal(transaction.json.recent_status.status_id, '5');
           done();
         });
     });
