@@ -417,24 +417,6 @@ Transactions.create(
 );
 
 
-// Create a Transaction with idempotency key
-[Idempotent requests documentation](https://docs.synapsepay.com/docs/create-transaction#section-idempotent-requests)
-
-const options = {
-  idempotency_key: 'some_unique_key'
-};
-
-Transactions.createWithOptions(
-  node,
-  options,
-  createPayload,
-  function(err, transactionResp) {
-    // error or transaction object
-    transaction = transactionResp;
-  }
-);
-
-
 // Get a Transaction
 
 Transactions.get(

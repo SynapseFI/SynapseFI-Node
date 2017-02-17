@@ -65,30 +65,30 @@ describe('Transactions', function() {
       );
     });
 
-    it('should create a transaction with an idempotency key', function(done) {
-      var options = {
-        idempotency_key: Math.floor(Math.random() * 1000000000)
-      };
-      Transactions.createWithOptions(
-        testNode,
-        options,
-        createPayload,
-        function(err, transaction) {
-          // create another transaction using same idempotency key
-          // should return an error
-          Transactions.createWithOptions(
-            testNode,
-            options,
-            createPayload,
-            function(err, trans2) {
-              assert.equal(transaction.json.recent_status.status_id, '1');
-              assert.isNotNull(err);
-              done();
-            }
-          );
-        }
-      );
-    });
+    // it('should create a transaction with an idempotency key', function(done) {
+    //   var options = {
+    //     idempotency_key: Math.floor(Math.random() * 1000000000)
+    //   };
+    //   Transactions.createWithOptions(
+    //     testNode,
+    //     options,
+    //     createPayload,
+    //     function(err, transaction) {
+    //       // create another transaction using same idempotency key
+    //       // should return an error
+    //       Transactions.createWithOptions(
+    //         testNode,
+    //         options,
+    //         createPayload,
+    //         function(err, trans2) {
+    //           assert.equal(transaction.json.recent_status.status_id, '1');
+    //           assert.isNotNull(err);
+    //           done();
+    //         }
+    //       );
+    //     }
+    //   );
+    // });
   });
 
   describe('get transactions', function() {
