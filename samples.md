@@ -79,7 +79,8 @@ Users.create(
 let options = {
   _id: USER_ID,
   fingerprint: USER_FINGERPRINT,
-  ip_address: Helpers.getUserIP()
+  ip_address: Helpers.getUserIP(),
+  full_dehydrate: 'yes' //optional
 };
 
 Users.get(
@@ -211,7 +212,8 @@ Nodes.get(
 Nodes.get(
   user,
   {
-    _id: NODE_ID
+    _id: NODE_ID,
+    full_dehydrate: 'yes' //optional
   },
   function(err, nodeResponse) {
     // error or node object
