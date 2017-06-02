@@ -5,14 +5,14 @@ var Clients = require('../lib/Clients.js');
 const Helpers = {
   client: new Clients(process.env.CLIENT_ID, process.env.CLIENT_SECRET, false),
   ip_address: '127.0.0.1',
-  fingerprint: 'fingerprint123',
+  fingerprint: 'fingerprint',
   // fill these in with values associated with your own keys
-  user_id: '57f9421186c2737c5820d29e',
+  user_id: 'userID',
   // Make sure node_id provided is allowed: "CREDIT-AND-DEBIT" permissions
-  node_id: '57fae3cf86c273223be199a3',
+  node_id: 'nodeID',
   // Make sure to_node_id provided has type: 'SYNAPSE-US' 
-  to_node_id: '57fb13b686c27351ae7bd8c1',
-  trans_id: '588aaf4486c2730bf932dd54'
+  to_node_id: 'toNodeID',
+  trans_id: 'transID'
 };
 
 module.exports = Helpers;

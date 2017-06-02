@@ -79,7 +79,8 @@ Users.create(
 let options = {
   _id: USER_ID,
   fingerprint: USER_FINGERPRINT,
-  ip_address: Helpers.getUserIP()
+  ip_address: Helpers.getUserIP(),
+  full_dehydrate: 'yes' //optional
 };
 
 Users.get(
@@ -95,9 +96,10 @@ Users.get(
 // Get All Users
 
 let options = {
-  page: '',
-  per_page: '',
-  query: ''
+  ip_address: Helpers.getUserIP(),
+  page: '', //optional
+  per_page: '', //optional
+  query: '' //optional
 };
 
 let users;
@@ -164,38 +166,6 @@ user.addDocuments(
   }
 );
 
-
-// Answer KBA Questions if Virtual Doc Status is SUBMITTED|MFA_PENDING
-
-const kbaPayload = {
-  documents: [{
-    id: BASE_DOCUMENT_ID,
-    virtual_docs: [{
-      id: VIRTUAL_DOC_ID,
-      meta: {
-        question_set: {
-          answers: [
-            { question_id: 1, answer_id: 1 },
-            { question_id: 2, answer_id: 1 },
-            { question_id: 3, answer_id: 1 },
-            { question_id: 4, answer_id: 1 },
-            { question_id: 5, answer_id: 1 }
-          ]
-        }
-      }
-    }]
-  }]
-};
-
-user.answerKBA(
-  kbaPayload,
-  function(err, userResponse) {
-    // error or user object
-    user = userResponse;
-  }
-);
-
-
 // Update Existing Base Document
 
 const userUpdatePayload = {
@@ -243,7 +213,8 @@ Nodes.get(
 Nodes.get(
   user,
   {
-    _id: NODE_ID
+    _id: NODE_ID,
+    full_dehydrate: 'yes' //optional
   },
   function(err, nodeResponse) {
     // error or node object
