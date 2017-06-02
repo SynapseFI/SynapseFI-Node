@@ -96,9 +96,10 @@ Users.get(
 // Get All Users
 
 let options = {
-  page: '',
-  per_page: '',
-  query: ''
+  ip_address: Helpers.getUserIP(),
+  page: '', //optional
+  per_page: '', //optional
+  query: '' //optional
 };
 
 let users;

@@ -1,6 +1,6 @@
 {
   "name": "synapsepay",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Node.js Library for SynapsePay API v3.x Rest",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "payments",
     "synapsepay"
   ],
-  "author": "SynapsePay LLC.<help@synapsepay.com>",
+  "author": "Synapse Financial Technologies Inc.<help@synapsepay.com>",
   "license": "(ISC)",
   "devDependencies": {
     "chai-http": "^3.0.0",
