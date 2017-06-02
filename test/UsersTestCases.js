@@ -52,7 +52,6 @@ describe('Users', function() {
           ip_address: Helpers.ip_address
         },
         function(err, json) {
-          console.error(err);
           assert.isNull(err, 'Error should be null');
           assert.isTrue(json['users'].length > 0, 'More than one user should be returned');
           done();
