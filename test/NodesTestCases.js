@@ -139,6 +139,15 @@ describe('Nodes', function() {
         }
       );
     });
+    
+    it('should resend micro deposits', function(done) {
+      node.resendMicro(
+        function(err, updatedNode) {
+          assert.isNull(err, 'there was no error');
+          done();
+        }
+      );
+    });
 
     it('should update permission to CREDIT-AND-DEBIT after verification', function(done) {
       var microPayload = {
