@@ -331,6 +331,17 @@ node.update(
   }
 );
 
+// Resend Microdeposits (for those added via Account/Routing)
+
+node = nodes[0];
+
+node.resendMicro(
+  function(err, nodeResponse) {
+    // error or node object
+    node = nodeResponse;
+  }
+);
+
 
 // Delete a Node
 
