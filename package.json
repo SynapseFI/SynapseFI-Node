@@ -14,10 +14,7 @@
   "author": "Synapse Financial Technologies Inc.<help@synapsepay.com>",
   "license": "(ISC)",
   "devDependencies": {
-<<<<<<< HEAD
     "chai": "^4.1.2",
-=======
->>>>>>> 387f5b1a7b3a233ecc39669c27a7e1507991ccd9
     "chai-http": "^3.0.0",
     "eslint": "^3.7.1",
     "eslint-config-google": "^0.6.0",
