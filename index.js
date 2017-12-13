@@ -18,7 +18,7 @@ module.exports = {
   Nodes: Nodes,
   Node: Node,
   Subnets : Subnets,
-  Sunbet : Subnet,
+  Subnet : Subnet,
   Subscriptions : Subscriptions,
   Subscription : Subscription,
   Transactions: Transactions,
