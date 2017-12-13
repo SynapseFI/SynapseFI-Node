@@ -41,4 +41,8 @@ node_modules
 .eslintrc.json
 
 # MarkDown Preview
+
 *.html
+
+.env
+

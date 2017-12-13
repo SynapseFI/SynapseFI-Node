@@ -13,6 +13,7 @@ const Helpers = {
   // Make sure to_node_id provided has type: 'SYNAPSE-US' 
   to_node_id: 'toNodeID',
   trans_id: 'transID'
+
 };
 
 module.exports = Helpers;
