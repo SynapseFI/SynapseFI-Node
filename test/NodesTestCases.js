@@ -247,5 +247,4 @@ describe('Nodes', function() {
       );
     });
   });
-
 });

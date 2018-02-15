@@ -14,7 +14,6 @@ const Helpers = {
   to_node_id: 'toNodeID',
   trans_id: 'transID',
   subnet_id: 'subnet_id'
-
 };
 
 module.exports = Helpers;
