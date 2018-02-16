@@ -195,4 +195,56 @@ describe('Nodes', function() {
     });
   });
 
+  describe('get with full_dehydrate', function() {
+    it('should get a single Node object with full dehydrate', function(done) {
+      Nodes.get(
+        nodeUser,
+        {
+          _id: Helpers.node_id,
+          full_dehydrate: 'yes'
+        },
+        function(err, node) {
+          assert.isNull(err);
+          assert(node.user !== undefined);
+          done();
+        }
+      );
+    });
+  });
+
+  describe('get with full_dehydrate and force_refresh', function() {
+    it('should get a single Node object with full dehydrate and force_refresh', function(done) {
+      Nodes.get(
+        nodeUser,
+        {
+          _id: Helpers.node_id,
+          full_dehydrate: 'yes',
+          force_refresh: 'yes'
+        },
+        function(err, node) {
+          assert.isNull(err);
+          assert(node.user !== undefined);
+          done();
+        }
+      );
+    });
+  });
+
+  describe('get with force_refresh', function() {
+    it('should get a single Node object with full dehydrate and force_refresh', function(done) {
+      Nodes.get(
+        nodeUser,
+        {
+          _id: Helpers.node_id,
+          full_dehydrate: 'yes',
+          force_refresh: 'yes'
+        },
+        function(err, node) {
+          assert.isNull(err);
+          assert(node.user !== undefined);
+          done();
+        }
+      );
+    });
+  });
 });
