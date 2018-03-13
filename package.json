@@ -2,6 +2,10 @@
   "name": "synapsepay",
   "version": "0.3.0",
   "description": "Node.js Library for SynapsePay API v3.x Rest",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/SynapseFI/SynapseFI-Node.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": "mocha"
