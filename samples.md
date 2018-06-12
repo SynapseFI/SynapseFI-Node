@@ -582,4 +582,18 @@ Subnets.get(
 );
 
 
+// Update Subnet
+
+const updatePayload = {
+  allowed: 'LOCKED'
+};
+
+subnet.update(
+  updatePayload,
+  function(err, subnetResp) {
+    // error or subnet object
+    subnet = subnetResp;
+  }
+);
+
 
