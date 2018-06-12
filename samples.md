@@ -450,3 +450,160 @@ transaction.delete(function(err, transactionResp) {
   }
 );
 ```
+
+## Subscription API Calls
+
+```javascript
+// Imports
+
+const Subscriptions = SynapsePay.Subscriptions;
+
+
+// Create a Subscription
+
+const createPayload = {
+  scope: [
+    'USERS|POST',
+    'USER|PATCH',
+    'NODES|POST',
+    'NODE|PATCH',
+    'TRANS|POST',
+    'TRAN|PATCH'
+  ],
+  url: 'https://requestb.in/zp216zzp'
+};
+
+let subscription;
+
+Subscriptions.create(
+  client,
+  createPayload,
+  function(err, subscriptionResp) {
+    // error or subscription object
+    subscription = subscriptionResp;
+  }
+);
+
+
+// Get a Subscription
+
+Subscriptions.get(
+  client,
+  {
+    _id: SUBSCRIPTION_ID
+  },
+  function(err, subscriptionResp) {
+    // error or subscription object
+    subscription = subscriptionResp;
+  }
+);
+
+
+// Get All Subscriptions
+
+let subscriptions;
+
+Subscriptions.get(
+  client,
+  null,
+  function(err, subscriptionsResp) {
+    // error or subscription object
+    subscriptions = subscriptionsResp;
+  }
+);
+
+
+// Update Subscription
+
+const updatePayload = {
+    scope : 'USERS|POST'
+};
+
+subscription.update(
+  updatePayload,
+  function(err, subscriptionResp) {
+    // error or subscription object
+    subscription = subscriptionResp;
+  }
+);
+
+```
+## Subnet API Calls
+
+```javascript
+// Imports
+
+const Subnets = SynapsePay.Subnets;
+
+
+// Create a Subnet
+
+const createPayload = {
+  nickname: "Test AC/RT"
+};
+
+let subnet;
+
+Subnets.create(
+  node,
+  createPayload,
+  function(err, subnetResp) {
+    // error or subnet object
+    subnet = subnetResp;
+  }
+);
+
+
+// Get a Subnet
+
+Subnets.get(
+  node,
+  {
+    _id: SUBNET_ID
+  },
+  function(err, subnetResp) {
+    // error or subnet object
+    subnet = subnetResp;
+  }
+);
+
+
+// Get All Subnets
+
+let subnets;
+
+Subnets.get(
+  node,
+  null,
+  function(err, subnetsResp) {
+    // error or subnet object
+    subnets = subnetsResp;
+  }
+);
+
+
+// Update Subnet
+
+const updatePayload = {
+  allowed: 'LOCKED'
+};
+
+transaction.update(
+  updatePayload,
+  function(err, transactionResp) {
+    // error or transaction object
+    transaction = transactionResp;
+  }
+);
+
+
+// Delete Transaction
+
+transaction.delete(function(err, transactionResp) {
+    // error or transaction object
+    transaction = transactionResp;
+  }
+);
+```
+
+
