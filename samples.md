@@ -582,28 +582,4 @@ Subnets.get(
 );
 
 
-// Update Subnet
-
-const updatePayload = {
-  allowed: 'LOCKED'
-};
-
-transaction.update(
-  updatePayload,
-  function(err, transactionResp) {
-    // error or transaction object
-    transaction = transactionResp;
-  }
-);
-
-
-// Delete Transaction
-
-transaction.delete(function(err, transactionResp) {
-    // error or transaction object
-    transaction = transactionResp;
-  }
-);
-```
-
 
