@@ -5,7 +5,8 @@ var Clients = require('./lib/Clients.js'),
     Node = require('./lib/Node.js'),
     Transactions = require('./lib/Transactions.js'),
     Transaction = require('./lib/Transaction.js'),
-    Helpers = require('./lib/Helpers.js');
+    Helpers = require('./lib/Helpers.js'),
+    Institutions = require ('./lib/Institutions.js');
 
 module.exports = {
   Clients: Clients,
@@ -15,5 +16,6 @@ module.exports = {
   Node: Node,
   Transactions: Transactions,
   Transaction: Transaction,
-  Helpers: Helpers
+  Helpers: Helpers,
+  Institutions: Institutions
 };
