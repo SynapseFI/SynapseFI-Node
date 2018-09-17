@@ -419,7 +419,7 @@ let transactions;
 
 Transactions.get(
   node,
-  null,
+  { page: 0, per_page: 20 },
   function(err, transactionsResp) {
     // error or transaction object
     transactions = transactionsResp;
