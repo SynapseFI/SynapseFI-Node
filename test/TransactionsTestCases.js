@@ -24,6 +24,19 @@ var createPayload = {
   }
 };
 
+const pageOptions = {
+  page: 2,
+  per_page: 5
+}
+
+const pageParam = {
+  page: 3
+}
+
+const perPageParam = {
+  per_page: 5
+}
+
 var testUser;
 var testNode;
 
@@ -116,6 +129,41 @@ describe('Transactions', function() {
           done();
         }
       );
+    });
+  });
+
+  describe('get all transactions filtered by pagination and limit', () => {
+    it('should filter results by page', (done) => {
+      Transactions.get(
+        testNode,
+        pageParam,
+        (err, transactions) => {
+          assert.equal(transactions.page, pageParam.page);
+          done();
+        }
+      )
+    });
+
+    it('should filter results by limit', (done) => {
+      Transactions.get(
+        testNode,
+        perPageParam,
+        (err, transactions) => {
+          assert.equal(transactions.limit, perPageParam.per_page);
+          done();
+        }
+      )
+    });
+
+    it('should filter results by both params', (done) => {
+      Transactions.get(
+        testNode,
+        pageOptions,
+        (err, transactions) => {
+          assert.equal(transactions.limit, pageOptions.per_page);
+          done();
+        }
+      )
     });
   });
 });
