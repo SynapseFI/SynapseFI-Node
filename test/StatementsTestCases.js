@@ -121,7 +121,7 @@ describe('Statements', function() {
           per_page: 15
         },
         function(err, statements) {
-          assert.equal(statements.limit, perPageParam.per_page);
+          assert.equal(statements.limit, 15);
           done();
         }
       )
@@ -136,8 +136,8 @@ describe('Statements', function() {
           per_page: 12
         },
         function(err, statements) {
-          assert.equal(statements.page, bothParams.page);
-          assert.equal(statements.limit, bothParams.per_page);
+          assert.equal(statements.page, 2);
+          assert.equal(statements.limit, 12);
           done();
         }
       )
