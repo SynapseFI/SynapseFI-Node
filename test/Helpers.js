@@ -17,5 +17,3 @@ const Helpers = {
 };
 
 module.exports = Helpers;
-
-'use strict';
