@@ -139,7 +139,7 @@ describe('Nodes', function() {
         }
       );
     });
-    
+
     it('should resend micro deposits', function(done) {
       node.resendMicro(
         function(err, updatedNode) {
@@ -245,6 +245,64 @@ describe('Nodes', function() {
           done();
         }
       );
+    });
+  });
+
+  describe('get nodes with correct filter params', () => {
+    it('should filter nodes by page', done => {
+      Nodes.get(
+        nodeUser,
+        {
+          page: 2
+        },
+        (err, nodes) => {
+          assert.equal(nodes.page, 2);
+          done();
+        }
+      )
+    });
+
+    it('should filter nodes by limit', done => {
+      Nodes.get(
+        nodeUser,
+        {
+          per_page: 16
+        },
+        (err, nodes) => {
+          assert.equal(nodes.limit, 16);
+          done();
+        }
+      )
+    });
+
+    it('should filter nodes by type', done => {
+      Nodes.get(
+        nodeUser,
+        {
+          type: 'DEPOSIT-US'
+        },
+        (err, nodes) => {
+          assert.equal(nodes.nodes[0].type, 'DEPOSIT-US');
+          done();
+        }
+      )
+    });
+
+    it('should filter nodes by all params', done => {
+      Nodes.get(
+        nodeUser,
+        {
+          type: 'DEPOSIT-US',
+          page: 1,
+          per_page: 15
+        },
+        (err, nodes) => {
+          assert.equal(nodes.nodes[0].type, 'DEPOSIT-US');
+          assert.equal(nodes.page, 1);
+          assert.equal(nodes.limit, 15);
+          done();
+        }
+      )
     });
   });
 });
