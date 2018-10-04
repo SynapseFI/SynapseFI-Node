@@ -133,7 +133,7 @@ describe('Transactions', function() {
   });
 
   describe('get all transactions filtered by pagination and limit', () => {
-    it('should filter results by page', (done) => {
+    it('should filter results by page', done => {
       Transactions.get(
         testNode,
         pageParam,
@@ -144,7 +144,7 @@ describe('Transactions', function() {
       )
     });
 
-    it('should filter results by limit', (done) => {
+    it('should filter results by limit', done => {
       Transactions.get(
         testNode,
         perPageParam,
@@ -155,13 +155,43 @@ describe('Transactions', function() {
       )
     });
 
-    it('should filter results by both params', (done) => {
+    it('should filter results by both params', done => {
       Transactions.get(
         testNode,
         pageOptions,
         (err, transactions) => {
           assert.equal(transactions.limit, pageOptions.per_page);
           done();
+        }
+      )
+    });
+  });
+
+  describe('get all client transactions', () => {
+    it('should retrieve all client Transactions', done => {
+      Transactions.getClient(
+        Helpers.client,
+        {},
+        (err, transactions) => {
+            assert(Array.isArray(transactions.trans));
+            assert.equal(transactions.trans[0].client.id, Helpers.client.client_id);
+            done();
+          }
+        }
+      )
+    });
+  });
+
+  describe('get all user transactions', () => {
+    it('should get all user transactions', done => {
+      Transactions.getUser(
+        testUser,
+        {},
+        (err, transactions) => {
+            assert(Array.isArray(transactions.trans));
+            assert(transactions.trans[0].to.user._id === Helpers.user_id || transactions.trans[0].from.user_id === Helpers.user_id);
+            done();
+          }
         }
       )
     });
