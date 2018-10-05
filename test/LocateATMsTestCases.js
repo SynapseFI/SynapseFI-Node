@@ -3,7 +3,6 @@
 var assert = require('chai').assert;
 var LocateATMs = require('../lib/LocateATMs.js');
 var Helpers = require('./Helpers.js');
-var Users = require('../lib/Users.js');
 
 var CREATE_PAYLOAD = {
   page: 1,
@@ -12,29 +11,13 @@ var CREATE_PAYLOAD = {
   zip: '94103'
 };
 
-var testUser;
-
 describe('LocateATMs', function() {
   this.timeout(30000);
-
-  beforeEach(function(done) {
-    Users.get(
-      Helpers.client,
-      {
-        ip_address: Helpers.ip_address,
-        fingerprint: Helpers.fingerprint,
-        _id: Helpers.user_id
-      },
-      function(err, user) {
-        testUser = user;
-        done();
-      });
-  });
 
   describe('get atms with passed in parameters', function() {
     it('should create an ATM object array', function(done) {
       LocateATMs.get(
-        testUser,
+        Helpers.client,
         CREATE_PAYLOAD,
         function(err, json) {
           assert(Array.isArray(json.atms));;
@@ -45,7 +28,7 @@ describe('LocateATMs', function() {
 
     it('should find ATMs within the correct radius', function(done) {
       LocateATMs.get(
-        testUser,
+        Helpers.client,
         CREATE_PAYLOAD,
         function(err, json) {
           assert(json.atms[json.atms.length - 1].distance < CREATE_PAYLOAD.radius);
@@ -57,7 +40,7 @@ describe('LocateATMs', function() {
 
   it('should find ATMs within the correct zipcode', function(done) {
     LocateATMs.get(
-      testUser,
+      Helpers.client,
       CREATE_PAYLOAD,
       function(err, json) {
         assert(json.atms[0].atmLocation.address.postalCode.slice(0, 3) === CREATE_PAYLOAD.zip.slice(0, 3));
@@ -69,7 +52,7 @@ describe('LocateATMs', function() {
   describe('get atms with no passed in parameters', function() {
     it('should return an empty array with default parameters', function(done) {
       LocateATMs.get(
-        testUser,
+        Helpers.client,
         {},
         function(err, json) {
           assert(json.atms.length === 0);
@@ -84,7 +67,7 @@ describe('LocateATMs', function() {
   describe('get atms with lat and lon', function() {
     it('should return atms by lat and lon', function(done) {
       LocateATMs.get(
-        testUser,
+        Helpers.client,
         {
           lat: '37.7749',
           lon: '-122.4194'
