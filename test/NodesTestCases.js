@@ -100,10 +100,10 @@ describe('Nodes', function() {
         nodeUser,
         bankLoginWithMfa,
         function(err, nodes) {
-          assert.isNotNull(err, 'there was an error');
-          assert.isNotNull(err.body.mfa, 'there is an MFA question');
+          assert.isNotNull(nodes)
+          assert.isNotNull(nodes.body.mfa);
 
-          var mfa = err.body.mfa;
+          var mfa = nodes.body.mfa;
           var mfaPayload = {
             access_token: mfa.access_token,
             mfa_answer: 'test_answer'
