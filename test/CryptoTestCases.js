@@ -16,8 +16,9 @@ describe('crypto', function() {
           assert.isNotNaN(json.USDETH);
           done();
         }
-      });
+      );
     });
+
 
     it('should return equivalent of $1 of btc and eth', function(done) {
       Crypto.getQuotes(
@@ -27,7 +28,7 @@ describe('crypto', function() {
           assert.isNotNaN(json.ETHUSD);
           done();
         }
-      });
+      );
     });
   });
 
@@ -40,7 +41,7 @@ describe('crypto', function() {
           assert.exists(json.BTC.data);
           done();
         }
-      });
+      );
     });
 
     it('should return market news', function(done) {
@@ -51,7 +52,7 @@ describe('crypto', function() {
           assert.exists(json.BTC.news);
           done();
         }
-      });
+      );
     });
 
     it('should return requested crypto asset market data', function(done) {
@@ -64,7 +65,7 @@ describe('crypto', function() {
           assert.exists(json.ETH);
           done();
         }
-      });
+      );
     });
   });
 });
