@@ -20,7 +20,7 @@ var testSubnet;
 
 describe('Subnet', function() {
   this.timeout(30000);
-  
+
   before(function(done) {
     Users.get(
       Helpers.client,
@@ -34,7 +34,7 @@ describe('Subnet', function() {
         Nodes.get(
           testUser,
           {
-            _id:Helpers.node_id
+            _id:Helpers.to_node_id
           },
           function(err, node) {
             testNode = node;
@@ -46,9 +46,9 @@ describe('Subnet', function() {
                 done();
               }
             );
-          } 
-        )  
-      }  
+          }
+        )
+      }
     )
   });
 
@@ -58,7 +58,7 @@ describe('Subnet', function() {
         updatePayload,
         function(err, subnet) {
           assert.equal(
-            subnet.json.allowed, 
+            subnet.json.allowed,
             testSubnet.json.allowed
           );
           done();

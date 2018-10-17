@@ -29,7 +29,7 @@ describe('Subnets', function() {
         Nodes.get(
           testUser,
           {
-            _id: Helpers.node_id
+            _id: Helpers.to_node_id
           },
           function(err, node) {
             testNode = node;
