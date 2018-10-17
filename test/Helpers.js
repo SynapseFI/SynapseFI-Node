@@ -13,7 +13,8 @@ const Helpers = {
   // Make sure to_node_id provided has type: 'SYNAPSE-US'
   to_node_id: 'toNodeID',
   trans_id: 'transID',
-  subnet_id: 'subnet_id'
+  subnet_id: 'subnet_id',
+  debit_card_id: 'debit_card_id'
 };
 
 module.exports = Helpers;
