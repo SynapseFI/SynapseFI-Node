@@ -8,7 +8,7 @@ var Helpers = require('./Helpers.js');
 
 var transPayload = {
   to: {
-    type: 'SYNAPSE-US',
+    type: 'DEPOSIT-US',
     id: Helpers.to_node_id
   },
   amount: {
@@ -34,7 +34,7 @@ var testTransaction;
 
 describe('Transaction', function() {
   this.timeout(30000);
-  
+
   before(function(done) {
     Users.get(
       Helpers.client,
@@ -60,9 +60,9 @@ describe('Transaction', function() {
                 done();
               }
             );
-          } 
-        )  
-      }  
+          }
+        )
+      }
     )
   });
 
@@ -72,7 +72,7 @@ describe('Transaction', function() {
         updatePayload,
         function(err, transaction) {
           assert.equal(
-            transaction.json.recent_status.note, 
+            transaction.json.recent_status.note,
             testTransaction.json.recent_status.note
           );
           done();

@@ -25,6 +25,7 @@ var verifyPayload = {
 
 var testUser;
 var testNode;
+var cardNum;
 
 describe('Node', function() {
   this.timeout(30000);
@@ -74,5 +75,85 @@ describe('Node', function() {
       );
     });
   });
+});
 
+describe('Node - card related', function() {
+  this.timeout(30000);
+
+  beforeEach(function(done) {
+    Users.get(
+      Helpers.client,
+      {
+        ip_address: Helpers.ip_address,
+        fingerprint: Helpers.fingerprint,
+        _id: Helpers.user_id
+      },
+      function(err, user) {
+        testUser = user;
+        Nodes.get(
+          testUser,
+          {
+            _id: Helpers.debit_card_id
+          },
+          function(err, cardNode) {
+            cardNum = cardNode.json.info.card_number;
+            testNode = cardNode;
+            done();
+          }
+        );
+      });
+  });
+
+  describe('debit card', function() {
+    it('should reset card information', function(done) {
+      testNode.resetDebitCard(
+        {
+          reset: 'YES'
+        },
+        function(err, json) {
+          if (err) {
+            done(err);
+          } else {
+            assert.notEqual(cardNum, json.info.card_number);
+            done();
+          }
+        }
+      )
+    });
+
+    it('should ship physical card', function(done) {
+      testNode.shipDebitCard(
+        {
+          ship: 'YES',
+          fee_node_id: Helpers.to_node_id
+        },
+        function(err, json) {
+          if (err) {
+            done(err);
+          } else {
+            assert(json.timeline[json.timeline.length - 1].note.includes('Card sent for printing.'));
+            done();
+          }
+        }
+      )
+    });
+  });
+
+  describe('dummy transactions', function() {
+    it('should trigger dummy transaction', function(done) {
+      testNode.triggerDummyTransaction(
+        {
+          is_credit: 'YES'
+        },
+        function(err, json) {
+          if (err) {
+            done(err);
+          } else {
+            assert.isTrue(json.success);
+            done();
+          }
+        }
+      )
+    });
+  });
 });

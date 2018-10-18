@@ -10,10 +10,11 @@ const Helpers = {
   user_id: 'userID',
   // Make sure node_id provided is allowed: "CREDIT-AND-DEBIT" permissions
   node_id: 'nodeID',
-  // Make sure to_node_id provided has type: 'SYNAPSE-US'
+  // Make sure to_node_id provided has type: 'DEPOSIT-US'
   to_node_id: 'toNodeID',
   trans_id: 'transID',
-  subnet_id: 'subnet_id'
+  subnet_id: 'subnet_id',
+  debit_card_id: 'debit_card_id'
 };
 
 module.exports = Helpers;

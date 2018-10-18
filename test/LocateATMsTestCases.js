@@ -36,17 +36,17 @@ describe('LocateATMs', function() {
         }
       );
     });
-  });
 
-  it('should find ATMs within the correct zipcode', function(done) {
-    LocateATMs.get(
-      Helpers.client,
-      CREATE_PAYLOAD,
-      function(err, json) {
-        assert(json.atms[0].atmLocation.address.postalCode.slice(0, 3) === CREATE_PAYLOAD.zip.slice(0, 3));
-        done();
-      }
-    );
+    it('should find ATMs within the correct zipcode', function(done) {
+      LocateATMs.get(
+        Helpers.client,
+        CREATE_PAYLOAD,
+        function(err, json) {
+          assert(json.atms[0].atmLocation.address.postalCode.slice(0, 3) === CREATE_PAYLOAD.zip.slice(0, 3));
+          done();
+        }
+      );
+    });
   });
 
   describe('get atms with no passed in parameters', function() {
