@@ -92,6 +92,7 @@ var addDocsPayload = {
 
 var unverifiedUser;
 var baseUrl = 'https://uat-api.synapsefi.com/v3.1';
+var devices = [];
 
 describe('User', function() {
   this.timeout(30000);
@@ -108,6 +109,34 @@ describe('User', function() {
           done();
         }
       );
+  });
+
+  describe('register new fingerprint', function() {
+    it('should send updated fingerprint', function(done) {
+      unverifiedUser.registerFingerprint('static_pin', function(err, json) {
+        assert.equal(json.body.http_code, '202');
+        assert(Array.isArray(json.body.phone_numbers));
+        for (let i = 0; i < json.body.phone_numbers.length; i++) {
+          devices.push(json.body.phone_numbers[i]);
+        }
+        done();
+      });
+    });
+
+    it('should supply 2FA device', function(done) {
+      unverifiedUser.supplyDevice2FA('static_pin', devices[0], function(err, json) {
+        assert(json.body.message.en.includes(devices[0]));
+        done();
+      });
+    });
+
+    it('should verify fingerprint 2FA pin', function(done) {
+      unverifiedUser.verifyFingerprint('static_pin', '123456', function(err, json) {
+        assert.notExists(json.error);
+        assert.notExists(json.error_code);
+        done();
+      });
+    });
   });
 
   describe('update', function() {
