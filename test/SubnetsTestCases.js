@@ -80,4 +80,26 @@ describe('Subnets', function() {
       );
     });
   });
+
+  describe('subnet query parameters', function() {
+    it('should get subnet with specified query params', function(done) {
+      Subnets.get(
+        testNode,
+        {
+          page: 2,
+          per_page: 1
+        },
+        function(err, json) {
+          if (err) {
+            done(err);
+          } else {
+            assert.equal(json.limit, 1);
+            assert.equal(json.page, 2);
+            assert(Array.isArray(json.subnets));
+            done();
+          }
+        }
+      );
+    });
+  });
 });
