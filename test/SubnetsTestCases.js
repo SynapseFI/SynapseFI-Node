@@ -90,14 +90,10 @@ describe('Subnets', function() {
           per_page: 1
         },
         function(err, json) {
-          if (err) {
-            done(err);
-          } else {
-            assert.equal(json.limit, 1);
-            assert.equal(json.page, 2);
-            assert(Array.isArray(json.subnets));
-            done();
-          }
+          assert.equal(json.limit, 1);
+          assert.equal(json.page, 2);
+          assert(Array.isArray(json.subnets));
+          done();
         }
       );
     });
