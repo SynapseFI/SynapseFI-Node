@@ -12,6 +12,7 @@ var Clients = require('./lib/Clients.js'),
     Transaction = require('./lib/Transaction.js'),
     Helpers = require('./lib/Helpers.js'),
     Institutions = require('./lib/Institutions.js'),
+    LocateATMs = require('./lib/LocateATMs.js'),
     Crypto = require('./lib/Crypto.js');
 
 module.exports = {
@@ -29,5 +30,6 @@ module.exports = {
   Transaction: Transaction,
   Helpers: Helpers,
   Institutions: Institutions,
+  LocateATMs: LocateATMs,
   Crypto: Crypto
 };
