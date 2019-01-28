@@ -1,6 +1,6 @@
 {
   "name": "synapsepay",
-  "version": "0.8.1",
+  "version": "0.10.1",
   "description": "Node.js Library for SynapsePay API v3.x Rest",
   "repository": {
     "type": "git",
