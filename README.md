@@ -1,5 +1,5 @@
 ## SynapsePay-Node
-
+![status](https://img.shields.io/badge/Status-Deprecated-red.svg)  
 Simple API wrapper for SynapsePay REST V3 API.  This wrapper aims to handle the headers for each API request and appropriate error handling.
 
 
