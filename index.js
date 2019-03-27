@@ -14,6 +14,7 @@ var Clients = require('./lib/Clients.js'),
     Institutions = require('./lib/Institutions.js'),
     LocateATMs = require('./lib/LocateATMs.js'),
     Crypto = require('./lib/Crypto.js');
+    PublicKey = require('./lib/PublicKey.js');
 
 module.exports = {
   Clients: Clients,
@@ -31,5 +32,6 @@ module.exports = {
   Helpers: Helpers,
   Institutions: Institutions,
   LocateATMs: LocateATMs,
-  Crypto: Crypto
+  Crypto: Crypto,
+  PublicKey: PublicKey
 };
